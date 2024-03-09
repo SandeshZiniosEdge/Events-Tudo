@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { getDB } = require("../db");
 
 async function createEvent(eventData) {
@@ -32,7 +33,7 @@ async function updateEvent(eventId, eventData) {
 
   try {
     const result = await eventsCollection.updateOne(
-      { _id: eventId },
+      { _id: new mongoose.Types.ObjectId(eventId.toString()) },
       { $set: eventData }
     );
     return result;
@@ -47,7 +48,9 @@ async function deleteEvent(eventId) {
   const eventsCollection = db.collection("events");
   console.log("ID", eventId);
   try {
-    const result = await eventsCollection.deleteOne({ name: "Sample Event" });
+    const result = await eventsCollection.deleteOne({
+      _id: new mongoose.Types.ObjectId(eventId.toString()),
+    });
     return result;
   } catch (error) {
     console.error("Error deleting event:", error);
