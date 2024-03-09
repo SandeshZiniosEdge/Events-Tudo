@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const { connectToDatabase } = require("./db");
 const routes = require("./routes/route");
-import serverless from "serverless-http";
+const serverless = require("serverless-http");
 
 const PORT = 3000;
 
@@ -22,4 +22,4 @@ connectToDatabase().then(() => {
   });
 });
 
-export const handler = serverless(api);
+module.exports.handler = serverless(app);
