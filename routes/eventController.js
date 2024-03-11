@@ -27,7 +27,7 @@ async function getEvents() {
   }
 }
 
-async function updateEvent(eventId, eventData) {
+async function updateEvent(eventId, eventData, res) {
   const db = getDB();
   const eventsCollection = db.collection("events");
 
@@ -39,14 +39,14 @@ async function updateEvent(eventId, eventData) {
     return result;
   } catch (error) {
     console.error("Error updating event:", error);
-    throw new Error("Failed to update event");
+    res.status(400).json("Invalid Event Id");
   }
 }
 
-async function deleteEvent(eventId) {
+async function deleteEvent(req, res) {
+  const eventId = req.params.id;
   const db = getDB();
   const eventsCollection = db.collection("events");
-  console.log("ID", eventId);
   try {
     const result = await eventsCollection.deleteOne({
       _id: new mongoose.Types.ObjectId(eventId.toString()),
@@ -54,7 +54,7 @@ async function deleteEvent(eventId) {
     return result;
   } catch (error) {
     console.error("Error deleting event:", error);
-    throw new Error("Failed to delete event");
+    res.status(400).json("Invalid Event Id");
   }
 }
 
